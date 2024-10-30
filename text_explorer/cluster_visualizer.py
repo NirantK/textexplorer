@@ -1,10 +1,8 @@
 # pdf_text_explorer/cluster_visualizer.py
 
 import hdbscan
-import numpy as np
-import pandas as pd
 import plotly.express as px
-import umap.umap_ as umap
+import umap
 from litellm import completion
 from loguru import logger
 
@@ -72,7 +70,7 @@ class ClusterVisualizer:
         """
         try:
             logger.info("Labeling clusters using LLM")
-            cluster_labels = df['cluster'].unique()
+            cluster_labels = df["cluster"].unique()
             cluster_names = {}
 
             for cluster in cluster_labels:
@@ -81,18 +79,21 @@ class ClusterVisualizer:
                     cluster_names[cluster] = "Noise"
                     continue
                 # Get texts in this cluster
-                cluster_texts = df[df['cluster'] == cluster]['text'].tolist()
+                cluster_texts = df[df["cluster"] == cluster]["text"].tolist()
                 # Concatenate texts to form the cluster content
-                cluster_content = ' '.join(cluster_texts)
+                cluster_content = " ".join(cluster_texts)
                 # Limit the content size to avoid exceeding context length
                 cluster_content = cluster_content[:2000]
 
                 # Generate a cluster label using litellm
                 prompt = f"Provide a concise 2-3 word label that summarizes the following texts:\n\n{cluster_content}\n\nLabel:"
-                response = completion(model="gpt-3.5-turbo", messages=[{"role": "user", "content": prompt}])
+                response = completion(
+                    model="gpt-3.5-turbo",
+                    messages=[{"role": "user", "content": prompt}],
+                )
                 cluster_name = response.strip()
                 cluster_names[cluster] = cluster_name
-            df['cluster_name'] = df['cluster'].map(cluster_names)
+            df["cluster_name"] = df["cluster"].map(cluster_names)
             logger.info("Clusters labeled successfully")
             return df
         except Exception as e:
@@ -109,10 +110,12 @@ class ClusterVisualizer:
         try:
             logger.info("Visualizing clusters")
             fig = px.scatter(
-                df, x='x', y='y',
-                color='cluster_name',
-                hover_data=['text'],
-                title='Clusters of Text Chunks'
+                df,
+                x="x",
+                y="y",
+                color="cluster_name",
+                hover_data=["text"],
+                title="Clusters of Text Chunks",
             )
             fig.show()
             logger.info("Clusters visualized successfully")
