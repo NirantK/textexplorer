@@ -11,7 +11,7 @@ from loguru import logger
 
 
 class TextProcessor:
-    def __init__(self, text: str, model_name: str = "en_core_web_lg"):
+    def __init__(self, text: str, model_name: str = "en_core_web_sm"):
         try:
             self.spacy_nlp = spacy.load(model_name)
         except Exception as e:
