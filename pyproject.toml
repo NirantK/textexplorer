@@ -1,0 +1,37 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.poetry]
+name = "textexplorer"
+version = "0.0.1"
+description = "A library for extracting and exploring text from PDFs."
+authors = ["NirantK <nirant.bits@gmail.com>"]
+readme = "README.md"
+
+
+[tool.poetry.urls]
+Homepage = "https://github.com/NirantK/textexplorer"
+
+[tool.poetry.dependencies]
+python = ">=3.9,<3.11"
+litellm = "^1.51.0"
+scikit-learn = ">=1.5.0"
+loguru = "^0.7.2"
+pdfminer-six = "^20240706"
+python-dotenv = "^1.0.1"
+openai = {version = ">=1.52.2", optional = true}
+plotly = "^5.24.1"
+langchain-experimental = "^0.3.2"
+langchain-openai = "^0.2.4"
+rich = "^13.9.3"
+textacy = "^0.13.0"
+hdbscan = "^0.8.39"
+umap = "^0.1.1"
+pandas = "^2.2.3"
+umap-learn = "^0.5.7"
+
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.7.1"
+pytest = "^8.3.3"
+
